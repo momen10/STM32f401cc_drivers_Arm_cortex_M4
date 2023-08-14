@@ -1,8 +1,11 @@
 /*
- * Name : NVIC_prog.c
- *
- * Date : Jul 5, 2023
- *      Author: Dell
+   NAME        : NVIC_prog.c
+
+   AUTHOR      : MO'MEN AHMED
+   
+   DATE        : 8/8/2023
+   
+   DESCRIPTION : Program Source file for NVIC driver 
  */
 
 #include "NVIC_int.h"

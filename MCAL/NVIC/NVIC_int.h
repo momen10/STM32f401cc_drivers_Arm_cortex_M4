@@ -1,8 +1,11 @@
 /*
- * NVIC_int.h
- *
- *  Created on: Jul 5, 2023
- *      Author: Dell
+   NAME : NVIC_int.h
+
+   AUTHOR      : MO'MEN AHMED
+   
+   DATE        : 8/8/2023
+   
+   DESCRIPTION : Interface header file for NVIC driver 
  */
 
 #ifndef MCAL_NVIC_NVIC_INT_H_
