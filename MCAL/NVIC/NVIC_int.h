@@ -10,13 +10,16 @@
 
 #include "../../LIB/STD_TYPES.h"
 
-#define SYSTICK_PRIORITY       -1
-#define PENDSV_PRIORITY        -2
-#define DEBUG_MONITOR_PRIORITY -3
+#define SYSTICK_PRIORITY       -5
+#define PENDSV_PRIORITY        -6
+
 #define SV_CALL_PRIORITY       -4
-#define USAGE_FAULT_PRIORITY   -5
-#define BUS_FAULT_PRIORITY     -6
-#define MEM_MANAGE_PRIORITY    -7
+
+#define USAGE_FAULT_PRIORITY   -1
+#define BUS_FAULT_PRIORITY     -2
+#define MEM_MANAGE_PRIORITY    -3
+
+#define EXTI0_POSITION          6
 
 
 typedef enum{

@@ -1,7 +1,7 @@
 /*
- * NVIC_prog.c
+ * Name : NVIC_prog.c
  *
- *  Created on: Jul 5, 2023
+ * Date : Jul 5, 2023
  *      Author: Dell
  */
 
@@ -56,194 +56,34 @@ SCB->AIRCR |= ((AIRCR_VECTKEY << 16) | (Copy_enPriorityOption << 8)) ;
 //options for sub priority :   0 to 15
 void MNVIC_vSetPriority (s8 Copy_s8PriorityNum, u8 Copy_u8GroupPriority, u8 Copy_u8SubPriority  )
 {
-	u8 local_GroupingOption;
+	u32 local_GroupingOption;
 	//reading the three bits of priority option in SCB at AIRCR register
-	local_GroupingOption = (SCB->AIRCR & 0X00000700);
+	local_GroupingOption = ((SCB->AIRCR & 0X00000700)>>8);
+	u8 Local_u8PriorityData = Copy_u8SubPriority | (Copy_u8GroupPriority<<(local_GroupingOption-3));
 	if(Copy_s8PriorityNum<0)
 	{
-		if (local_GroupingOption == four_bits_group)
+		if(Copy_s8PriorityNum == USAGE_FAULT_PRIORITY ||
+		   Copy_s8PriorityNum == MEM_MANAGE_PRIORITY  ||
+		   Copy_s8PriorityNum == BUS_FAULT_PRIORITY)
 		{
-			if (Copy_s8PriorityNum == MEM_MANAGE_PRIORITY)
-			{
-				Copy_s8PriorityNum += 7;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<4);
-			}
-			else if(Copy_s8PriorityNum == BUS_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 6;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<12);
-			}
-			else if (Copy_s8PriorityNum == USAGE_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 5;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<20);
-			}
-			else if (Copy_s8PriorityNum == SV_CALL_PRIORITY)
-			{
-				Copy_s8PriorityNum += 4;
-				SCB ->SHPR2 |= (Copy_u8GroupPriority <<28);
-			}
-			else if (Copy_s8PriorityNum == SYSTICK_PRIORITY)
-			{
-				Copy_s8PriorityNum += 1;
-				SCB ->SHPR3 |= (Copy_u8GroupPriority <<28);
-			}
+			Copy_s8PriorityNum += 3;    //NOW THEY ARE 0 OR 1 OR 2
+			NVIC->ISPR[1] |= (Local_u8PriorityData << (4+ 8*Copy_s8PriorityNum));
 		}
-		else if (local_GroupingOption ==three_bits_group_one_sub)
+		else if(Copy_s8PriorityNum == SV_CALL_PRIORITY)
 		{
-			if (Copy_s8PriorityNum == MEM_MANAGE_PRIORITY)
-			{
-				Copy_s8PriorityNum += 7;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<5)
-							| (Copy_u8SubPriority <<4);
-			}
-			else if(Copy_s8PriorityNum == BUS_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 6;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<13)
-							| (Copy_u8SubPriority <<12);
-			}
-			else if (Copy_s8PriorityNum == USAGE_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 5;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<21)
-							| (Copy_u8SubPriority <<20);
-			}
-			else if (Copy_s8PriorityNum == SV_CALL_PRIORITY)
-			{
-				Copy_s8PriorityNum += 4;
-				SCB ->SHPR2 |= (Copy_u8GroupPriority <<29)
-						    | (Copy_u8SubPriority <<28);
-			}
-			else if (Copy_s8PriorityNum == SYSTICK_PRIORITY)
-			{
-				Copy_s8PriorityNum += 1;
-				SCB ->SHPR3 |= (Copy_u8GroupPriority <<29)
-							| (Copy_u8SubPriority <<28);
-			}
-
+			Copy_s8PriorityNum += 7;    //NOW IT IS 4
+			NVIC->ISPR[2] |= (Local_u8PriorityData << (4+ 8*Copy_s8PriorityNum));
 		}
-		else if (local_GroupingOption == two_bits_group_two_sub)
+		else if(Copy_s8PriorityNum == SYSTICK_PRIORITY ||
+				Copy_s8PriorityNum == PENDSV_PRIORITY)
 		{
-			if (Copy_s8PriorityNum == MEM_MANAGE_PRIORITY)
-			{
-				Copy_s8PriorityNum += 7;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<6)
-										| (Copy_u8SubPriority <<4);
-			}
-			else if(Copy_s8PriorityNum == BUS_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 6;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<14)
-										| (Copy_u8SubPriority <<12);
-			}
-			else if (Copy_s8PriorityNum == USAGE_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 5;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<22)
-										| (Copy_u8SubPriority <<20);
-			}
-			else if (Copy_s8PriorityNum == SV_CALL_PRIORITY)
-			{
-				Copy_s8PriorityNum += 4;
-				SCB ->SHPR2 |= (Copy_u8GroupPriority <<30)
-							    		| (Copy_u8SubPriority <<28);
-			}
-			else if (Copy_s8PriorityNum == SYSTICK_PRIORITY)
-			{
-				Copy_s8PriorityNum += 1;
-				SCB ->SHPR3 |= (Copy_u8GroupPriority <<30)
-										| (Copy_u8SubPriority <<28);
-			}
-		}
-		else if (local_GroupingOption == one_bit_group_three_sub)
-		{
-			if (Copy_s8PriorityNum == MEM_MANAGE_PRIORITY)
-			{
-				Copy_s8PriorityNum += 7;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<7)
-										| (Copy_u8SubPriority <<4);
-			}
-			else if(Copy_s8PriorityNum == BUS_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 6;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<15)
-										| (Copy_u8SubPriority <<12);
-			}
-			else if (Copy_s8PriorityNum == USAGE_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 5;
-				SCB ->SHPR1 |= (Copy_u8GroupPriority <<23)
-										| (Copy_u8SubPriority <<20);
-			}
-			else if (Copy_s8PriorityNum == SV_CALL_PRIORITY)
-			{
-				Copy_s8PriorityNum += 4;
-				SCB ->SHPR2 |= (Copy_u8GroupPriority <<31)
-							    		| (Copy_u8SubPriority <<28);
-			}
-			else if (Copy_s8PriorityNum == SYSTICK_PRIORITY)
-			{
-				Copy_s8PriorityNum += 1;
-				SCB ->SHPR3 |= (Copy_u8GroupPriority <<31)
-										| (Copy_u8SubPriority <<28);
-			}
-
-		}
-		else if (local_GroupingOption == four_bits_sub)
-		{
-			if (Copy_s8PriorityNum == MEM_MANAGE_PRIORITY)
-			{
-				Copy_s8PriorityNum += 7;
-				SCB ->SHPR1 |= (Copy_u8SubPriority <<4);
-			}
-			else if(Copy_s8PriorityNum == BUS_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 6;
-				SCB ->SHPR1 |= (Copy_u8SubPriority <<12);
-			}
-			else if (Copy_s8PriorityNum == USAGE_FAULT_PRIORITY)
-			{
-				Copy_s8PriorityNum += 5;
-				SCB ->SHPR1 |= (Copy_u8SubPriority <<20);
-			}
-			else if (Copy_s8PriorityNum == SV_CALL_PRIORITY)
-			{
-				Copy_s8PriorityNum += 4;
-				SCB ->SHPR2 |= (Copy_u8SubPriority <<28);
-			}
-			else if (Copy_s8PriorityNum == SYSTICK_PRIORITY)
-			{
-				Copy_s8PriorityNum += 1;
-				SCB ->SHPR3 |= (Copy_u8SubPriority <<28);
-			}
+			Copy_s8PriorityNum += 8;    //NOW THEY ARE  2 OR 3
+			NVIC->ISPR[3] |= (Local_u8PriorityData << (4+ 8*Copy_s8PriorityNum));
 		}
 	}
 	else
 	{
-		if (local_GroupingOption == four_bits_group)
-		{
-			NVIC -> IPR[Copy_s8PriorityNum] = Copy_u8GroupPriority <<4;
-		}
-		else if (local_GroupingOption ==three_bits_group_one_sub)
-		{
-			NVIC -> IPR[Copy_s8PriorityNum] = (Copy_u8GroupPriority <<5)
-					                        | (Copy_u8SubPriority <<4) ;
-		}
-		else if (local_GroupingOption == two_bits_group_two_sub)
-		{
-			NVIC -> IPR[Copy_s8PriorityNum] = (Copy_u8GroupPriority <<6)
-					                        | (Copy_u8SubPriority <<4) ;
-		}
-		else if (local_GroupingOption == one_bit_group_three_sub)
-		{
-			NVIC -> IPR[Copy_s8PriorityNum] = (Copy_u8GroupPriority <<7)
-					                        | (Copy_u8SubPriority <<4) ;
-		}
-		else if (local_GroupingOption == four_bits_sub)
-		{
-			NVIC -> IPR[Copy_s8PriorityNum] = Copy_u8SubPriority <<4;
-		}
+		NVIC->IPR[Copy_s8PriorityNum] = Local_u8PriorityData << 4;
 	}
 }
 
