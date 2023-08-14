@@ -1,8 +1,11 @@
 /*
- * EXTI_cfg.h
+ * Name : NVIC_prog.c
  *
- *  Created on: Jul 15, 2023
- *      Author: Dell
+ * Date : Jul 5, 2023
+ *
+ * Author : Mo'men
+ *
+ * Description : Configuration header file for EXTI module
  */
 
 #ifndef MCAL_EXTI_EXTI_CFG_H_

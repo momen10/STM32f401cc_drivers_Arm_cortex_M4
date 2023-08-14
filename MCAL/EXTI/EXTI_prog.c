@@ -1,8 +1,11 @@
 /*
- * EXTI_prog.c
+ * Name : NVIC_prog.c
  *
- *  Created on: Jul 15, 2023
- *      Author: Dell
+ * Date : Jul 5, 2023
+ *
+ * Author : Mo'men
+ *
+ * Description : Program Source file for EXTI module
  */
 
 #include "EXTI_cfg.h"
@@ -11,12 +14,12 @@
 #include "../../LIB/BIT_MATH.h"
 #include "../../LIB/STD_TYPES.h"
 
-static volatile void (*EXTI_LINE0_PTR) (void);
-static volatile void (*EXTI_LINE1_PTR) (void);
-static volatile void (*EXTI_LINE2_PTR) (void);
-static volatile void (*EXTI_LINE3_PTR) (void);
-static volatile void (*EXTI_LINE4_PTR) (void);
-static volatile void (*EXTI_LINE5_PTR) (void);
+static volatile void (*EXTI_LINE_PTR[16]) (void);
+//static volatile void (*EXTI_LINE1_PTR) (void);
+//static volatile void (*EXTI_LINE2_PTR) (void);
+//static volatile void (*EXTI_LINE3_PTR) (void);
+//static volatile void (*EXTI_LINE4_PTR) (void);
+//static volatile void (*EXTI_LINE5_PTR) (void);
 
 
 void MEXTI_vInit(void)
@@ -74,6 +77,12 @@ void MEXTI_vSoftwareTrigger(u8 A_u8LineNo)
 
 	}
 }
+
+void MEXTI_vClearPendingFlag(MEXTI_LineNum_t A_enLineNo)
+{
+	SET_BIT(EXTI->PR , A_enLineNo);
+}
+
 void MEXTI_vSetTriggerOption(MEXTI_LineNum_t A_enLineNo , MEXTI_TriggerOption_t A_enTriggerOption)
 {
 	if (A_enLineNo >15)
@@ -102,37 +111,104 @@ void MEXTI_vSetTriggerOption(MEXTI_LineNum_t A_enLineNo , MEXTI_TriggerOption_t 
 
 void MEXTI_vSetCallBack (MEXTI_LineNum_t A_enLineNo, void (*A_ptrCallBack)(void))
 {
-	switch (A_enLineNo)
+	EXTI_LINE_PTR[A_enLineNo] = A_ptrCallBack ;
+}
+
+void MEXTI_vSetPort(EXTI_PORT_ID A_enPort_ID , MEXTI_LineNum_t A_enLineNo)
+{
+	//CLEARING THE REQUIRED 4 BITS
+   SYSCFG->EXTICR[A_enLineNo/4] &= ~(0b1111      << 4*(A_enLineNo % 4) );
+	//INSERTING THE REQUIRED PORT
+   SYSCFG->EXTICR[A_enLineNo/4] |=  (A_enPort_ID << 4*(A_enLineNo % 4));
+}
+
+
+//interrupt handler (ISR)
+void EXTI0_IRQHandler (void)
+{
+	MEXTI_vClearPendingFlag(EXTI_LIN0);
+	if(EXTI_LINE_PTR[0] != NULL)
 	{
-	case EXTI_LIN0:
-		EXTI_LINE0_PTR = A_ptrCallBack ;
-		break;
-	case EXTI_LIN1:
-		EXTI_LINE1_PTR = A_ptrCallBack ;
-		break;
-	case EXTI_LIN2:
-		EXTI_LINE2_PTR = A_ptrCallBack ;
-		break;
-	case EXTI_LIN3:
-		EXTI_LINE3_PTR = A_ptrCallBack ;
-		break;
-	case EXTI_LIN4:
-		EXTI_LINE4_PTR = A_ptrCallBack ;
-		break;
-	case EXTI_LIN5:
-		EXTI_LINE5_PTR = A_ptrCallBack ;
-		break;
+		(*EXTI_LINE_PTR[0])();
 	}
 }
 
-//interrupt handler (ISR)
-volatile u8 interrupts =0;
-void EXTI0_IRQHandler (void)
+void EXTI1_IRQHandler (void)
 {
-	if(EXTI_LINE0_PTR != NULL)
+	MEXTI_vClearPendingFlag(EXTI_LIN1);
+	if(EXTI_LINE_PTR[1] != NULL)
 	{
-		interrupts++;
-		(*EXTI_LINE0_PTR)();
-		MEXTI_vInit();
+		(*EXTI_LINE_PTR[1])();
+	}
+}
+
+void EXTI2_IRQHandler (void)
+{
+	MEXTI_vClearPendingFlag(EXTI_LIN2);
+	if(EXTI_LINE_PTR[2] != NULL)
+	{
+		(*EXTI_LINE_PTR[2])();
+	}
+}
+
+void EXTI3_IRQHandler (void)
+{
+	MEXTI_vClearPendingFlag(EXTI_LIN3);
+	if(EXTI_LINE_PTR[3] != NULL)
+	{
+		(*EXTI_LINE_PTR[3])();
+	}
+}
+
+void EXTI4_IRQHandler (void)
+{
+	MEXTI_vClearPendingFlag(EXTI_LIN4);
+	if(EXTI_LINE_PTR[4] != NULL)
+	{
+		(*EXTI_LINE_PTR[4])();
+	}
+}
+
+void EXTI9_5_IRQHandler (void)
+{
+	if (GET_BIT(EXTI->PR, 5) == 1)
+	{
+		MEXTI_vClearPendingFlag(EXTI_LIN5);
+		if(EXTI_LINE_PTR[5] != NULL)
+		{
+		  (*EXTI_LINE_PTR[5])();
+		}
+	}
+	else if (GET_BIT(EXTI->PR, 6) == 1)
+	{
+		MEXTI_vClearPendingFlag(EXTI_LIN6);
+		if(EXTI_LINE_PTR[6] != NULL)
+		{
+		  (*EXTI_LINE_PTR[6])();
+		}
+	}
+	else if (GET_BIT(EXTI->PR, 7) == 1)
+	{
+		MEXTI_vClearPendingFlag(EXTI_LIN7);
+		if(EXTI_LINE_PTR[7] != NULL)
+		{
+		  (*EXTI_LINE_PTR[7])();
+		}
+	}
+	else if (GET_BIT(EXTI->PR, 8) == 1)
+	{
+		MEXTI_vClearPendingFlag(EXTI_LIN8);
+		if(EXTI_LINE_PTR[8] != NULL)
+		{
+		  (*EXTI_LINE_PTR[8])();
+		}
+	}
+	else if (GET_BIT(EXTI->PR, 9) == 1)
+	{
+		MEXTI_vClearPendingFlag(EXTI_LIN9);
+		if(EXTI_LINE_PTR[9] != NULL)
+		{
+		  (*EXTI_LINE_PTR[9])();
+		}
 	}
 }

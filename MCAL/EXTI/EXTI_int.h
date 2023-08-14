@@ -1,8 +1,11 @@
 /*
- * EXTI_int.h
+ * Name : NVIC_prog.c
  *
- *  Created on: Jul 15, 2023
- *      Author: Dell
+ * Date : Jul 5, 2023
+ *
+ * Author : Mo'men
+ *
+ * Description : Interface Header file for EXTI module
  */
 
 #ifndef MCAL_EXTI_EXTI_INT_H_
@@ -34,11 +37,18 @@ typedef enum{
 	EXTI_LIN15,
 }MEXTI_LineNum_t;
 
+typedef enum{
+	EXTI_PORTA, EXTI_PORTB,
+	EXTI_PORTC, EXTI_PORTD
+}EXTI_PORT_ID;
+
 void MEXTI_vInit(void);
-void MEXTI_vEnableLine (u8 A_u8LineNo , MEXTI_TriggerOption_t trigger_option);
-void MEXTI_vDisableLine (u8 A_u8LineNo );
-void MEXTI_vSoftwareTrigger(u8 A_u8LineNo);
-void MEXTI_vSetTriggerOption(u8 A_u8LineNo , MEXTI_TriggerOption_t trigger_option);
+void MEXTI_vEnableLine (MEXTI_LineNum_t A_enLineNo , MEXTI_TriggerOption_t trigger_option);
+void MEXTI_vDisableLine (MEXTI_LineNum_t A_enLineNo );
+void MEXTI_vSoftwareTrigger(MEXTI_LineNum_t A_enLineNo);
+void MEXTI_vClearPendingFlag(MEXTI_LineNum_t A_enLineNo);
+void MEXTI_vSetTriggerOption(MEXTI_LineNum_t A_enLineNo , MEXTI_TriggerOption_t trigger_option);
 void MEXTI_vSetCallBack (MEXTI_LineNum_t A_enLineNo ,void (*A_ptrCallBack)(void));
+void MEXTI_vSetPort(EXTI_PORT_ID A_enPort_ID , MEXTI_LineNum_t A_enLineNo);
 
 #endif /* MCAL_EXTI_EXTI_INT_H_ */
