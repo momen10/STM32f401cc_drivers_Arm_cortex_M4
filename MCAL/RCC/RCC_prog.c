@@ -14,14 +14,18 @@
 void MRCC_vInit(void)
 {
 #if SYSTEM_CLOCK == HSI
-
+	CLR_BIT (RCC -> CFGR , SW0 );
+	CLR_BIT (RCC -> CFGR , SW1 );
+	SET_BIT (RCC -> CR   , HSION);
 #elif SYSTEM_CLOCK == HSE
-	SET_BIT(RCC -> CFGR , SW0);
+		  SET_BIT(RCC -> CFGR , SW0);
+		  CLR_BIT (RCC -> CFGR , SW1 );
 	#if   HSE_BYPASSING == HSE_NOT_BYPASSED
-		  CLR_BIT(RCC->CR , HSEBYP);
+		  CLR_BIT(RCC -> CR   , HSEBYP);
 	#elif HSE_BYPASSING == HSE_BYPASSED
-		  SET_BIT(RCC->CR , HSEBYP);
+		  SET_BIT(RCC -> CR   , HSEBYP);
 #endif
+	SET_BIT (RCC -> CR   , HSEON);
 #elif SYSTEM_CLOCK == PLL
 	SET_BIT(RCC -> CFGR , SW1);
 //checking P,N,M values
@@ -60,6 +64,10 @@ void MRCC_vInit(void)
 #else
 #error "invalid clock source"
 #endif
+//DETERMINING AHB PRESCALER
+	  RCC -> CFGR &= 0xFFFFFF0F;
+
+	  RCC -> CFGR |= (AHB_PRESCALER << 4);
 }
 
 void MRCC_vEnableClock(RCC_BusId_t copy_Bus_ID , RCC_PerId_t copy_Per_ID)

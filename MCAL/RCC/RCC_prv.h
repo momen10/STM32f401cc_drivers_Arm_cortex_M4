@@ -85,5 +85,20 @@ u32 DCKCFGR;
 #define SW0      0
 #define SW1      1
 
+//AHB PRESCALER OPTIONS
+#define AHB_FCPU          7
+#define AHB_FCPU_2        8
+#define AHB_FCPU_4        9
+#define AHB_FCPU_8        10
+#define AHB_FCPU_16       11
+#define AHB_FCPU_64       12
+#define AHB_FCPU_128      13
+#define AHB_FCPU_256      14
+#define AHB_FCPU_512      15
+
+//HSE BYPASSING OPTIONS:
+#define HSE_NOT_BYPASSED  0
+#define HSE_BYPASSED      1
+
 
 #endif /* MCAL_RCC_PRV_H_ */

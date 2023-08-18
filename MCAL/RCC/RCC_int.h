@@ -8,10 +8,6 @@
 #ifndef MCAL_RCC_INT_H_
 #define MCAL_RCC_INT_H_
 
-void MRCC_vInit(void);
-void MRCC_vEnableClock(RCC_BusId_t copy_Bus_ID , RCC_PerId_t copy_Per_ID);
-void MRCC_vDisableClock(RCC_BusId_t copy_Bus_ID , RCC_PerId_t copy_Per_ID);
-
 typedef enum{
 	RCC_AHB1 ,
 	RCC_AHB2,
@@ -20,11 +16,11 @@ typedef enum{
 }RCC_BusId_t;
 
 typedef enum{
-	GPIOA,
-	GPIOB,
-	GPIOC,
-	GPIOD,
-	GPIOE,
+	GPIO_A,
+	GPIO_B,
+	GPIO_C,
+	GPIO_D,
+	GPIO_E,
 	GPIOH =7,
 	CRC = 12,
 	DMA1=21,
@@ -54,4 +50,8 @@ typedef enum{
 	TIM10,
 	TIM11
 }RCC_PerId_t;
+
+void MRCC_vInit(void);
+void MRCC_vEnableClock(RCC_BusId_t copy_Bus_ID , RCC_PerId_t copy_Per_ID);
+void MRCC_vDisableClock(RCC_BusId_t copy_Bus_ID , RCC_PerId_t copy_Per_ID);
 #endif /* MCAL_RCC_INT_H_ */
