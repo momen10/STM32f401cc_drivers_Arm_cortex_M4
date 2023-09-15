@@ -1,8 +1,9 @@
 /*
- * S2P.h
+ * NAME : S2P.h
  *
- *  Created on: Jul 25, 2023
- *      Author: Dell
+ * Created on: Jul 25, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 
 #ifndef HAL_S2P_S2P_H_

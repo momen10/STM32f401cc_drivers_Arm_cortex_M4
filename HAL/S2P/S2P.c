@@ -1,8 +1,9 @@
 /*
- * S2P.c
+ * NAME : S2P.c
  *
- *  Created on: Jul 25, 2023
- *      Author: Dell
+ * Created on: Jul 25, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 
 
@@ -48,7 +49,7 @@ void HS2P_vSendData(u16 data)
 {
 		u8 serial_bit;
 		//1- put data in serial data pin
-		for (u8 i=0; i<8*NO_OF_SHIFT_REG ;i++)
+		for (s8 i=8*NO_OF_SHIFT_REG - 1 ; i>0  ;i--)
 		{
 			serial_bit = GET_BIT(data, i);
 			if(serial_bit)
