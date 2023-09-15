@@ -1,8 +1,9 @@
 /*
- * SYSTICK_int.h
+ * NAME :SYSTICK_int.h
  *
- *  Created on: Jul 17, 2023
- *      Author: Dell
+ * Created on: Jul 17, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 
 #ifndef MCAL_SYSTICK_SYSTICK_INT_H_
@@ -15,6 +16,9 @@ void MSTK_vInit(void);
 void MSTK_vDelayms(u32 A_u32DelayMilliSec);
 void MSTK_vSetIntervalSingle(u32 A_u32DelayMilliSec, void (*ptr) (void));
 void MSTK_vSetIntervalPeriodic(u32 A_u32DelayMilliSec, void (*ptr) (void));
+void MSTK_vDelayus(u32 A_u32DelayMicroSec);
+void MSTK_vSetIntervalSingleMicro(u32 A_u32DelayMicroSec, void (*ptr) (void));
+void MSTK_vSetIntervalPeriodicMicro(u32 A_u32DelayMicroSec, void (*ptr) (void));
 u32 MSTK_u32GetElapsedTime (void);
 u32 MSTK_u32GetRemainingTime (void);
 void MSTK_vStartTimer(u32 A_u32PreloadValue);
