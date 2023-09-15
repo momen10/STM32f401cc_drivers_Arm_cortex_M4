@@ -1,14 +1,40 @@
 /*
- * seven_segment.h
+ * NAME :seven_segment.h
  *
- *  Created on: Jul 4, 2023
- *      Author: Dell
+ * Created on: Jul 4, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 
 #ifndef HAL_SEVEN_SEGMENT_H_
 #define HAL_SEVEN_SEGMENT_H_
 
-#include "../../MCAL/GPIO/GPIO.int.h"
+#include "../../MCAL/GPIO/GPIO_int.h"
+
+//A IF LSB               GFEDCBA
+#define  ZERO_SS      0b00111111
+#define  ONE_SS       0b00000110
+#define  TWO_SS       0b01011011
+#define  THREE_SS     0b01001111
+#define  FOUR_SS      0b01100110
+#define  FIVE_SS      0b01101101
+#define  SIX_SS       0b01111101
+#define  SEVEN_SS     0b00000111
+#define  EIGHT_SS     0b01111111
+#define  NINE_SS      0b01101111
+
+#define DIRECT_METHPD   0
+#define S2P_METHOD      1
+
+/*OPTIONS
+ * 1- DIRECT_METHOD      2- S2P_METHOD*/
+#define SEV_SEG_METHOD  S2P_METHOD
+
+#if   SEV_SEG_METHOD == DIRECT_METHOD
+#define SEV_SEG_PINS   8
+#elif SEV_SEG_METHOD == S2P_METHOD
+#define SEV_SEG_PINS   3
+#endif
 
 //7 segment type options: 1- COMMON_ANODE  2- COMMON_CATHODE
 typedef enum{
@@ -33,9 +59,11 @@ typedef struct{
 	GPIO_PinNum_t      G_Pin;
 	GPIO_PortNum_t     Dot_Port;
 	GPIO_PinNum_t      Dot_Pin;
+	GPIO_PortNum_t     Com_Port;
+	GPIO_PinNum_t      Com_Pin;
 }Seven_segment_Config_t;
 
-void Seven_seg_Init (Seven_segment_Config_t*);
+void SevSeg_vInit(void);
 
 void Led_A_On(Seven_segment_Config_t*);
 void Led_B_On(Seven_segment_Config_t*);
@@ -56,5 +84,9 @@ void Display_Six(Seven_segment_Config_t*);
 void Display_Seven(Seven_segment_Config_t*);
 void Display_Eight(Seven_segment_Config_t*);
 void Display_Nine(Seven_segment_Config_t*);
+
+void Display_Number(Seven_segment_Config_t* , u8 num);
+void TurnOff(Seven_segment_Config_t* );
+void TurnOn(Seven_segment_Config_t*);
 
 #endif /* HAL_SEVEN_SEGMENT_H_ */

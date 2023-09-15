@@ -1,101 +1,36 @@
 /*
- * seven_segment.c
+ * NAME :seven_segment.c
  *
- *  Created on: Jul 4, 2023
- *      Author: Dell
+ * Created on: Jul 4, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 
 #include "seven_segment.h"
-#include "../../MCAL/GPIO/GPIO.int.h"
+#include "../../MCAL/GPIO/GPIO_int.h"
 #include "../../MCAL/RCC/RCC_int.h"
 
-void Seven_seg_Init (Seven_segment_Config_t* Config_st)
+extern MGPIO_Config_t SevSegm_Pins[SEV_SEG_PINS];
+
+void SevSeg_vInit(void)
 {
-	switch (Config_st -> A_Port)
+#if SEV_SEG_METHOD == S2P_METHOD
+	Seven_segment_Config_t my_ss ={
+			.type = COMMON_CATHODE
+	};
+
+#elif SEV_SEG_METHOD == DIRECT_METHOD
+	for (u8 i =0 ; i<SEV_SEG_PINS ; i++)
 	{
-	case Port_A:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_A);
-		break;
-	case Port_B:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_B);
-		break;
-	case Port_C:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_C);
-		break;
+      MGPIO_vInit(&SevSegm_Pins[i]);
 	}
-	switch (Config_st -> B_Port)
-	{
-	case Port_A:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_A);
-		break;
-	case Port_B:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_B);
-		break;
-	case Port_C:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_C);
-		break;
-	}
-	switch (Config_st -> C_Port)
-	{
-	case Port_A:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_A);
-		break;
-	case Port_B:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_B);
-		break;
-	case Port_C:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_C);
-		break;
-	}
-	switch (Config_st -> D_Port)
-	{
-	case Port_A:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_A);
-		break;
-	case Port_B:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_B);
-		break;
-	case Port_C:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_C);
-		break;
-	}
-	switch (Config_st -> E_Port)
-	{
-	case Port_A:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_A);
-		break;
-	case Port_B:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_B);
-		break;
-	case Port_C:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_C);
-		break;
-	}
-	switch (Config_st -> F_Port)
-	{
-	case Port_A:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_A);
-		break;
-	case Port_B:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_B);
-		break;
-	case Port_C:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_C);
-		break;
-	}
-	switch (Config_st -> G_Port)
-	{
-	case Port_A:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_A);
-		break;
-	case Port_B:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_B);
-		break;
-	case Port_C:
-		MRCC_vEnableClock(RCC_AHB1 , GPIO_C);
-		break;
-	}
+	Seven_segment_Config_t my_ss ={
+			.type = COMMON_CATHODE
+	};
+
+#endif
 }
+
 
 void Led_A_Off(Seven_segment_Config_t* copy_Config_st)
 {
@@ -264,3 +199,66 @@ Led_D_Off(copy_Config_st);
 Led_E_Off(copy_Config_st);
 }
 
+void Display_Number(Seven_segment_Config_t* ptr_str , u8 num)
+{
+	switch(num)
+	{
+	case 0 :
+		Display_Zero(ptr_str);
+		break;
+	case 1 :
+		Display_One(ptr_str);
+		break;
+	case 2 :
+		Display_Two(ptr_str);
+		break;
+	case 3 :
+		Display_Three(ptr_str);
+		break;
+	case 4 :
+		Display_Four(ptr_str);
+		break;
+	case 5 :
+		Display_Five(ptr_str);
+		break;
+	case 6 :
+		Display_Six(ptr_str);
+		break;
+	case 7 :
+		Display_Seven(ptr_str);
+		break;
+	case 8 :
+		Display_Eight(ptr_str);
+		break;
+	case 9 :
+		Display_Nine(ptr_str);
+		break;
+	}
+}
+
+void TurnOff(Seven_segment_Config_t* ptr_str)
+{
+switch(ptr_str -> type )
+{
+case COMMON_CATHODE :
+	MGPIO_vSetPin(ptr_str -> Com_Port, ptr_str-> Com_Pin, LOGIC_ONE);
+	break;
+case COMMON_ANODE:
+	MGPIO_vSetPin(ptr_str -> Com_Port, ptr_str-> Com_Pin, LOGIC_ZERO);
+	break;
+}
+
+}
+
+void TurnOn(Seven_segment_Config_t* ptr_str)
+{
+	switch(ptr_str -> type )
+	{
+	case COMMON_CATHODE :
+		MGPIO_vSetPin(ptr_str -> Com_Port, ptr_str-> Com_Pin, LOGIC_ZERO);
+		break;
+	case COMMON_ANODE:
+		MGPIO_vSetPin(ptr_str -> Com_Port, ptr_str-> Com_Pin, LOGIC_ONE);
+		break;
+	}
+}
