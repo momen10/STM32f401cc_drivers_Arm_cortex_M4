@@ -1,22 +1,22 @@
 /*
- * GPIO_prog.c
+ * NAME :GPIO_prog.c
  *
- *  Created on: Jul 3, 2023
- *      Author: Dell
+ * Created on: Jul 3, 2023
+ *
+ * Author: Mo'men Ahmed
  */
-
-#include "GPIO.config.h"
-#include "GPIO.int.h"
 #include "GPIO_prv.h"
 
 #include "../../LIB/STD_TYPES.h"
 #include "../../LIB/BIT_MATH.h"
+#include "GPIO_config.h"
+#include "GPIO_int.h"
 
 void MGPIO_vInit(MGPIO_Config_t* copy_Config_Struct)
 {
 	switch (copy_Config_Struct->Port_ID)
 	{
-	case Port_A:
+	case GPIO_Port_A:
 		//First, determine the mode of the GPIO
 		//clearing the required two bits
 		GPIOA -> MODER &= ~(0b11 << (copy_Config_Struct->Pin_ID)*2 );
@@ -61,13 +61,13 @@ void MGPIO_vInit(MGPIO_Config_t* copy_Config_Struct)
 				GPIOA -> AFRH &= ~(0b1111 << (copy_Config_Struct -> Pin_ID) *4);
 				//inserting the required option:
 				GPIOA -> AFRH |= (copy_Config_Struct -> Alt_func
-						<< (copy_Config_Struct -> Pin_ID) *4);
+						<< ((copy_Config_Struct -> Pin_ID -8) *4));
 			}
 		}
 
 		break;
 
-	case Port_B:
+	case GPIO_Port_B:
 		//clearing the required two bits
 		GPIOB -> MODER &= ~(0b11 << (copy_Config_Struct->Pin_ID)*2 );
 		//inserting the required option
@@ -110,11 +110,11 @@ void MGPIO_vInit(MGPIO_Config_t* copy_Config_Struct)
 				GPIOB -> AFRH &= ~(0b1111 << (copy_Config_Struct -> Pin_ID) *4);
 				//inserting the required option:
 				GPIOB -> AFRH |= (copy_Config_Struct -> Alt_func
-						<< (copy_Config_Struct -> Pin_ID) *4);
+						<< (copy_Config_Struct -> Pin_ID -8) *4);
 			}
 		}
 		break;
-	case Port_C:
+	case GPIO_Port_C:
 		//clearing the required two bits
 		GPIOC -> MODER &= ~(0b11 << (copy_Config_Struct->Pin_ID)*2 );
 		//inserting the required option
@@ -158,7 +158,7 @@ void MGPIO_vInit(MGPIO_Config_t* copy_Config_Struct)
 				GPIOC -> AFRH &= ~(0b1111 << (copy_Config_Struct -> Pin_ID) *4);
 				//inserting the required option:
 				GPIOC -> AFRH |= (copy_Config_Struct -> Alt_func
-						<< (copy_Config_Struct -> Pin_ID) *4);
+						<< (copy_Config_Struct -> Pin_ID -8) *4);
 			}
 		}
 		break;
@@ -170,7 +170,7 @@ void MGPIO_vSetPin(GPIO_PortNum_t copy_Port_ID, GPIO_PinNum_t copy_Pin_ID ,GPIO_
 {
 	switch (copy_Port_ID)
 	{
-	case Port_A:
+	case GPIO_Port_A:
 		if(Pin_value == LOGIC_ZERO)
 		{
 			CLR_BIT(GPIOA -> ODR, copy_Pin_ID);
@@ -180,7 +180,7 @@ void MGPIO_vSetPin(GPIO_PortNum_t copy_Port_ID, GPIO_PinNum_t copy_Pin_ID ,GPIO_
 			SET_BIT(GPIOA -> ODR, copy_Pin_ID);
 		}
 		break;
-	case Port_B:
+	case GPIO_Port_B:
 		if(Pin_value == LOGIC_ZERO)
 		{
 			CLR_BIT(GPIOB -> ODR, copy_Pin_ID);
@@ -190,7 +190,7 @@ void MGPIO_vSetPin(GPIO_PortNum_t copy_Port_ID, GPIO_PinNum_t copy_Pin_ID ,GPIO_
 			SET_BIT(GPIOB -> ODR, copy_Pin_ID);
 		}
 		break;
-	case Port_C:
+	case GPIO_Port_C:
 		if(Pin_value == LOGIC_ZERO)
 		{
 			CLR_BIT(GPIOC -> ODR, copy_Pin_ID);
@@ -207,7 +207,7 @@ void MGPIO_vSetPinFast(GPIO_PortNum_t copy_Port_ID, GPIO_PinNum_t copy_Pin_ID ,G
 {
 	switch(copy_Port_ID)
 	{
-	case Port_A:
+	case GPIO_Port_A:
 		if(Pin_value == LOGIC_ZERO)
 		{
 			SET_BIT(GPIOA -> BSRR, copy_Pin_ID + 16);
@@ -217,7 +217,7 @@ void MGPIO_vSetPinFast(GPIO_PortNum_t copy_Port_ID, GPIO_PinNum_t copy_Pin_ID ,G
 			SET_BIT(GPIOA -> BSRR, copy_Pin_ID);
 		}
 		break;
-	case Port_B:
+	case GPIO_Port_B:
 		if(Pin_value == LOGIC_ZERO)
 		{
 			SET_BIT(GPIOB -> BSRR, copy_Pin_ID + 16);
@@ -227,7 +227,7 @@ void MGPIO_vSetPinFast(GPIO_PortNum_t copy_Port_ID, GPIO_PinNum_t copy_Pin_ID ,G
 			SET_BIT(GPIOB -> BSRR, copy_Pin_ID);
 		}
 		break;
-	case Port_C:
+	case GPIO_Port_C:
 		if(Pin_value == LOGIC_ZERO)
 		{
 			SET_BIT(GPIOC -> BSRR, copy_Pin_ID + 16);
@@ -246,15 +246,31 @@ u8 MGPIO_u8GetPin(GPIO_PortNum_t copy_Port_ID, GPIO_PinNum_t copy_Pin_ID )
  u8 pin_value=0;
  switch (copy_Port_ID)
  {
- case Port_A:
+ case GPIO_Port_A:
 	 pin_value = GET_BIT(GPIOA ->IDR, copy_Pin_ID);
 	 break;
- case Port_B:
+ case GPIO_Port_B:
 	 pin_value = GET_BIT(GPIOB ->IDR, copy_Pin_ID);
 	 break;
- case Port_C:
+ case GPIO_Port_C:
 	 pin_value = GET_BIT(GPIOC ->IDR, copy_Pin_ID);
 	 break;
  }
  return pin_value;
+}
+
+void MGPIO_vTogPin (GPIO_PortNum_t copy_Port_ID, GPIO_PinNum_t copy_Pin_ID)
+{
+	 switch (copy_Port_ID)
+	 {
+	 case GPIO_Port_A:
+		 TOG_BIT(GPIOA ->ODR, copy_Pin_ID);
+		 break;
+	 case GPIO_Port_B:
+		 TOG_BIT(GPIOB ->ODR, copy_Pin_ID);
+		 break;
+	 case GPIO_Port_C:
+		 TOG_BIT(GPIOC ->ODR, copy_Pin_ID);
+		 break;
+	 }
 }

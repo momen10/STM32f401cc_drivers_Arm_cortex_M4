@@ -1,8 +1,9 @@
 /*
- * GPIO_prv.h
+ * NAME :GPIO_prv.h
  *
- *  Created on: Jul 3, 2023
- *      Author: Mo'men Ahmed
+ * Created on: Jul 3, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 
 #ifndef MCAL_GPIO_GPIO_PRV_H_
