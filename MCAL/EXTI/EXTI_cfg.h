@@ -1,11 +1,9 @@
 /*
- * Name : NVIC_prog.c
+ * NAME: EXTI_cfg.h
  *
- * Date : Jul 5, 2023
+ * Created on: Jul 17, 2023
  *
- * Author : Mo'men
- *
- * Description : Configuration header file for EXTI module
+ * Author: Mo'men Ahmed
  */
 
 #ifndef MCAL_EXTI_EXTI_CFG_H_

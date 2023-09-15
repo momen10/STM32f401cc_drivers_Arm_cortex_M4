@@ -1,18 +1,15 @@
 /*
- * Name : NVIC_prog.c
+ * NAME: EXTI_prv.h
  *
- * Date : Jul 5, 2023
+ * Created on: Jul 17, 2023
  *
- * Author : Mo'men
- *
- * Description : Private Header file for EXTI module
+ * Author: Mo'men Ahmed
  */
 
 #ifndef MCAL_EXTI_EXTI_PRV_H_
 #define MCAL_EXTI_EXTI_PRV_H_
 
-#define EXTI_BASE_ADDR    0x40013C00
-#define SYSCFG_BASE_ADDR  0x40013800
+#define EXTI_BASE_ADDR   0x40013C00
 
 typedef struct{
 	u32 IMR;
@@ -24,16 +21,6 @@ typedef struct{
 }MEXTI_MemMap_t;
 
 #define EXTI   ((volatile MEXTI_MemMap_t *)(EXTI_BASE_ADDR))
-
-typedef struct{
-	u32 MEMRMP;
-	u32 PMC;
-	u32 EXTICR[4];
-	u16 reserved;
-	u32 CMPCR;
-}MSYSCFG_MemMap_t;
-
-#define SYSCFG  ((volatile MSYSCFG_MemMap_t*)(SYSCFG_BASE_ADDR))
 
 
 #endif /* MCAL_EXTI_EXTI_PRV_H_ */
