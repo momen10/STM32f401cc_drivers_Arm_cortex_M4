@@ -1,8 +1,9 @@
 /*
- * RCC_cfg.h
+ * NAME :RCC_cfg.h
  *
- *  Created on: Jun 29, 2023
- *      Author:  Mo'men
+ * Created on: Jun 29, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 
 #ifndef MCAL_RCC_CFG_H_
@@ -46,6 +47,11 @@
  * 4-RCC_FCPU_8    5-RCC_FCPU_16   6-RCC_FCPU_64
  * 7-RCC_FCPU_128  8-RCC_FCPU_256  9-RCC_FCPU_512
  * */
-#define AHB_PRESCALER     AHB_FCPU_2
+#define AHB_PRESCALER     AHB_FCPU
+
+/*             APB2 PRESCALER OPTIONS:
+ * 1- APB2_AHB_1    2- APB2_AHB_2    3- APB2_AHB_4
+ * 4- APB2_AHB_8    5- APB2-AHB_16*/
+#define APB2_PRESCALER    APB2_AHB_1
 
 #endif /* MCAL_RCC_CFG_H_ */

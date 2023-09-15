@@ -1,8 +1,9 @@
 /*
- * RCC_prv.h
+ * NAME :RCC_prv.h
  *
- *  Created on: Jun 29, 2023
- *      Author:  Mo'men
+ * Created on: Jun 29, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 
 #ifndef MCAL_RCC_PRV_H_
@@ -95,6 +96,13 @@ u32 DCKCFGR;
 #define AHB_FCPU_128      13
 #define AHB_FCPU_256      14
 #define AHB_FCPU_512      15
+
+//APB2 PRESCALER OPTIONS :
+#define APB2_AHB_1        0
+#define APB2_AHB_2        4
+#define APB2_AHB_4        5
+#define APB2_AHB_8        6
+#define APB2_AHB_16       7
 
 //HSE BYPASSING OPTIONS:
 #define HSE_NOT_BYPASSED  0

@@ -1,8 +1,9 @@
 /*
- * RCC_prog.c
+ * NAME :RCC_int.h
  *
- *  Created on: Jun 29, 2023
- *      Author:  Mo'men
+ * Created on: Jun 29, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 #include "RCC_cfg.h"
 #include "RCC_int.h"
@@ -68,6 +69,10 @@ void MRCC_vInit(void)
 	  RCC -> CFGR &= 0xFFFFFF0F;
 
 	  RCC -> CFGR |= (AHB_PRESCALER << 4);
+
+//DETERMINING APB2 PRESCALER
+	  RCC -> CFGR &= ~((u32)(0b111 << 13));
+	  RCC -> CFGR |= (APB2_PRESCALER << 13);
 }
 
 void MRCC_vEnableClock(RCC_BusId_t copy_Bus_ID , RCC_PerId_t copy_Per_ID)

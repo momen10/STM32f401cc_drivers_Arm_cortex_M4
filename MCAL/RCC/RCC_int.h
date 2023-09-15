@@ -1,8 +1,9 @@
 /*
- * RCC_int.h
+ * NAME :RCC_int.h
  *
- *  Created on: Jun 29, 2023
- *      Author: Mo'men
+ * Created on: Jun 29, 2023
+ *
+ * Author: Mo'men Ahmed
  */
 
 #ifndef MCAL_RCC_INT_H_
@@ -16,39 +17,39 @@ typedef enum{
 }RCC_BusId_t;
 
 typedef enum{
-	GPIO_A,
-	GPIO_B,
-	GPIO_C,
-	GPIO_D,
-	GPIO_E,
-	GPIOH =7,
-	CRC = 12,
-	DMA1=21,
-	DMA2=22,
-	OTGFS = 7,
-	TIM2=0,
-	TIM3,
-	TIM4,
-	TIM5,
-	WWDG = 11,
-	SPI2 = 14,
-	SPI3,
-	USART2 = 17,
-	I2C1 = 21,
-	I2C2,
-	I2C3,
-	PWR = 28,
-	TIM1=0,
-	USART1 = 4,
-	USART6,
-	ADC1 = 8,
-	SDIO = 11,
-	SPI1,
-	SPI4,
-	SYSCFG,
-	TIM9 = 16,
-	TIM10,
-	TIM11
+RCC_GPIO_A,
+RCC_GPIO_B,
+RCC_GPIO_C,
+RCC_GPIO_D,
+RCC_GPIO_E,
+RCC_GPIOH =7,
+RCC_CRC = 12,
+RCC_DMA1=21,
+RCC_DMA2=22,
+RCC_OTGFS = 7,
+RCC_TIM2=0,
+RCC_TIM3,
+RCC_TIM4,
+RCC_TIM5,
+RCC_WWDG = 11,
+RCC_SPI2 = 14,
+RCC_SPI3,
+RCC_USART2 = 17,
+RCC_I2C1 = 21,
+RCC_I2C2,
+RCC_I2C3,
+RCC_PWR = 28,
+RCC_TIM1=0,
+RCC_USART1 = 4,
+RCC_USART6,
+RCC_ADC1 = 8,
+RCC_SDIO = 11,
+RCC_SPI1,
+RCC_SPI4,
+RCC_SYSCFG,
+RCC_TIM9 = 16,
+RCC_TIM10,
+RCC_TIM11
 }RCC_PerId_t;
 
 void MRCC_vInit(void);
