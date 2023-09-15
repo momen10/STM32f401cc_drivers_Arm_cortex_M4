@@ -1,8 +1,9 @@
 /*
- * LedMatrix.c
+ * NAME :LedMatrix_prog.c
  *
- *  Created on: Jul 24, 2023
- *      Author: Dell
+ * Created on: Jul 24, 2023
+ *     
+ * Author: Mo'men Ahmed
  */
 
 #include "LedMatrix_prv.h"

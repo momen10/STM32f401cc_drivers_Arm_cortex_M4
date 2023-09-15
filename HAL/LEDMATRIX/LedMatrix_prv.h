@@ -1,8 +1,9 @@
 /*
- * LedMatric.h
+ * NAME :LedMatrix_prv.h
  *
- *  Created on: Jul 24, 2023
- *      Author: Dell
+ * Created on: Jul 24, 2023
+ *     
+ * Author: Mo'men Ahmed
  */
 
 #ifndef HAL_LEDMATRIX_LEDMATRIX_PRV_H_

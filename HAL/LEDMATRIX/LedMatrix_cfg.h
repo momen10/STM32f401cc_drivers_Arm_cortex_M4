@@ -1,8 +1,9 @@
 /*
- * LedMatrix_cfg.h
+ * NAME :LedMatrix_cfg.h
  *
- *  Created on: Jul 24, 2023
- *      Author: Dell
+ * Created on: Jul 24, 2023
+ *     
+ * Author: Mo'men Ahmed
  */
 
 #ifndef HAL_LEDMATRIX_LEDMATRIX_CFG_H_
